@@ -1,12 +1,19 @@
-body ,html{
+body,html{
     background-image: url('https://i.postimg.cc/Xq7f1773/fundo.jpg');
     background-repeat: no-repeat;
     height: 100%;
   }
   body,h1 {font-family: "Raleway", sans-serif}
  .bgimg {
-  background-image: url('/w3images/forestbridge.jpg');
+ background-image: url('/w3images/forestbridge.jpg');
   min-height: 100%;
   background-position: center;
   background-size: cover;
+}
+/* Style for disabled links */
+a.disabled {
+  background: #ccc;
+  pointer-events: none;
+  cursor: default;
+  color: #666; /* Optional: Adjust text color for better contrast */
 }
