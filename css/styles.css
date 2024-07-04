@@ -1,9 +1,10 @@
+*  body {font-family: "Raleway", sans-serif }
+
 body,html{
     background-image: url('https://i.postimg.cc/Xq7f1773/fundo.jpg');
     background-repeat: no-repeat;
     height: 100%;
-  }
-  body,h1 {font-family: "Raleway", sans-serif}
+}
  .bgimg {
  background-image: url('/w3images/forestbridge.jpg');
   min-height: 100%;
@@ -16,4 +17,7 @@ a.disabled {
   pointer-events: none;
   cursor: default;
   color: #666; /* Optional: Adjust text color for better contrast */
+}
+h1, p{
+  text-align: center;
 }
