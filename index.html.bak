@@ -64,7 +64,7 @@
             </tr>
           <!-- Modalidade Lotofácil -->
             <tr>
-              <td class="align-left"><a href="https://estrategiasparalotofacil.netlify.app" target="_blank" enable>Lotofácil</a></td>
+              <td class="align-left"><a href="https://estrategiasparalotofacil.netlify.app" target="_blank" disable>Lotofácil</a></td>
                 <td><a href="https://jogodalotofacil.netlify.app/" target="_blank" disable>Jogo da Lotofácil</a></td>
                 <td><a href="https://calculadoralotofacil.netlify.app" target="_blank" enable>Calculadora Lotofácil</a></td>
                 <td><a href="https://lotofacildes.netlify.app" target="_blank" enable>Lotofácil Desdobramento</a></td>
@@ -83,8 +83,8 @@
               <td><a href="#" target="_blank" disable>Editar</a></td>
               <td><a href="#" target="_blank" disable>Editar</a></td>
               <td><a href="#" target="_blank" disable>Editar</a></td>
-              <td><a href="#" target="_blank" disable>Editar</small></a></td>
-              <td><a href="#" target="_blank" disable>Editar</a></td>
+              <td><a href="#" target="_blank" disable>Super 7 Login <small>(Em fase de teste)</small></a></td>
+              <td><a href="https://supersetecuriosidade.netlify.app/" target="_blank" enable>Curiosidades da Super Sete</a></td>
               <td><a href=# target="_blank" disable>Conferidor </a></td>
 
           </tr>
