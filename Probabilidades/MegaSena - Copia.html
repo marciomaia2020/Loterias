@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega-Sena - Loteria</title>
+    <style>
+ body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9fc;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        h2 {
+            color: #35669A;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+			box-sizing: border-box; /*ADICIONADO*/
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #0A3D62;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #a4c7e1;
+        }
+        .probabilidade, .premio {
+            font-weight: normal;
+            color: black;
+        }
+        .title-container {
+            background-color: #0A3D62;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 2em;
+        }
+       .form-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            width: 100%;
+            max-width: 300px;
+        }
+        #valor-aposta-simples{
+            background-color: #d1e9fa; /*ADICIONADO*/
+        }
+		#quantidade-jogos {
+            background-color: #a3d3f5; /*ADICIONADO*/
+        }
+        #quantidade-dezenas {
+            background-color: #75bdf0; /*ADICIONADO*/
+        }
+        #input-cotas{
+            background-color: #d1e9fa; /*ADICIONADO*/
+        }
+		
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .resultado-total {
+            color: #35669A;
+            font-size: 22px;
+        }
+		.resultado-total.jogos {
+            background-color: #e0f7fa;/*ADICIONADO*/
+        }
+        .resultado-total.dezenas {
+            background-color: #d1ffd6;/*ADICIONADO*/
+		}
+		.resultado-total strong {
+            color: #d32f2f;/*ADICIONADO*/
+        }
+		
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .button-container button {
+            background-color: #0A3D62;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 20px 100px;
+            border-radius: 8px;
+        }
+        .button-container button:hover {
+            background-color: #4DA8DA;
+        }
+        /* Responsividade */
+        @media (min-width: 768px) {
+            .form-container {
+                display: flex;
+                justify-content: space-around;
+                gap: 20px;
+            }
+            input, button {
+                width: auto;
+            }
+            .result {
+                font-size: 22px;
+            }
+        }
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+                border: 0;
+            }
+            th, td {
+                padding: 8px;
+            }
+            th {
+                font-size: 16px;
+            }
+            .probabilidade {
+                font-size: 12px;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #0A3D62;
+        }
+        li {
+            float: left;
+        }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover {
+            background-color: #4DA8DA;
+        }
+        .active{
+            background-color: #4DA8DA;
+        }
+        .pequeno{
+            text-align: center;
+            /*background-color: #4DA8DA;*/
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title-container">
+        <h1>Mega-Sena</h1>
+        <p>Calcule o valor total da sua aposta!</p>
+    </div>
+
+    <nav>
+		<ul>
+            <li><a class="active" href="https://loteriascaixa.netlify.app/">Voltar</a></li>
+            <li><a href="https://loterias.caixa.gov.br/Paginas/default.aspx" target="_blank">Todas as Modalidades</a></li>
+            <li><a href="https://www.loteriasonline.caixa.gov.br/silce-web/#/termos-de-uso" target="_blank">Jogue Online</a></li>
+		</ul>
+	</nav>
+
+
+<div class="form-container">
+   <div>
+        <label for="valor-aposta-simples">Valor da aposta simples (R$): </label>
+        <input type="number" id="valor-aposta-simples" step="0.01" placeholder="Ex: 5.00"><br>
+    </div>
+    <div>
+        <label for="quantidade-jogos">Quantidade de jogos: </label>
+        <input type="number" id="quantidade-jogos" min="1" placeholder="Ex: 1"><br>
+    </div>
+    <div>
+        <label for="quantidade-dezenas">Quantidade de dezenas por jogo (6 a 20): </label>
+        <input type="number" id="quantidade-dezenas" min="6" max="20" placeholder="Ex: 6" required><br>
+    </div>
+</div>
+
+    <div class="button-container">
+        <button onclick="calcular()">Calcular</button>
+    </div>
+
+
+    <div class="result">
+        <div id="resultado" class="resultado-total"></div>
+    </div>
+
+
+    <h2>Preços e Probabilidades</h2>
+    <p class="pequeno"><small>O <u>valor da Aposta (R$)</u> impactará significativamente a <u>probabilidade de Acertar as 6 dezenas</u>.</small></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Quantidade de Números</th>
+                <th>Valor da Aposta (R$)</th>
+                <th>Probabilidade de Acertar as 6 dezenas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>6</td><td>5,00</td><td>1 em 50.063.860</td></tr>
+            <tr><td>7</td><td>35,00</td><td>1 em 7.151.980</td></tr>
+            <tr><td>8</td><td>140,00</td><td>1 em 1.787.995</td></tr>
+            <tr><td>9</td><td>420,00</td><td>1 em 595.998</td></tr>
+            <tr><td>10</td><td>1.050,00</td><td>1 em 238.399</td></tr>
+            <tr><td>11</td><td>2.310,00</td><td>1 em 108.363</td></tr>
+            <tr><td>12</td><td>4.620,00</td><td>1 em 54.182</td></tr>
+            <tr><td>13</td><td>8.580,00</td><td>1 em 29.175</td></tr>
+            <tr><td>14</td><td>15.015,00</td><td>1 em 16.671</td></tr>
+            <tr><td>15</td><td>25.025,00</td><td>1 em 10.003</td></tr>
+            <tr><td>16</td><td>40.040,00</td><td>1 em 6.252</td></tr>
+            <tr><td>17</td><td>61.880,00</td><td>1 em 4.045</td></tr>
+            <tr><td>18</td><td>92.820,00</td><td>1 em 2.697</td></tr>
+            <tr><td>19</td><td>135.660,00</td><td>1 em 1.845</td></tr>
+            <tr><td>20</td><td>193.800,00</td><td>1 em 1.292</td></tr>
+        </tbody>
+    </table>
+
+    <script>
+        function calcular() {
+            const valorPorDezena = {
+                6: 5.00,
+                7: 35.00,
+                8: 140.00,
+                9: 420.00,
+                10: 1050.00,
+                11: 2310.00,
+                12: 4620.00,
+                13: 8580.00,
+                14: 15015.00,
+                15: 25025.00,
+                16: 40040.00,
+                17: 61880.00,
+                18: 92820.00,
+                19: 135660.00,
+                20: 193800.00
+            };
+        
+            const valorApostaSimples = parseFloat(document.getElementById('valor-aposta-simples').value) || 0;
+            const quantidadeJogos = parseInt(document.getElementById('quantidade-jogos').value);
+            const quantidadeDezenas = parseInt(document.getElementById('quantidade-dezenas').value);
+            const valorJogo = valorPorDezena[quantidadeDezenas] || valorApostaSimples;
+            const total = (valorJogo * quantidadeJogos).toFixed(2);
+        
+            const resultadoJogos = `Quantidade de jogos: <span class="resultado-total jogos">${quantidadeJogos}</span>`;
+            const resultadoDezenas = `Quantidade de dezenas por jogo: <span class="resultado-total dezenas">${quantidadeDezenas}</span>`;
+            const resultadoTotal = `O valor total para ${quantidadeJogos} jogo(s) de ${quantidadeDezenas} dezenas é: <strong>R$ ${total}</strong>`;
+        
+            document.getElementById('resultado').innerHTML = `${resultadoJogos}<br>${resultadoDezenas}<br>${resultadoTotal}`;
+        
+            // Inserir campo para cotas após o cálculo
+            if (!document.getElementById('input-cotas')) {
+                const cotasDiv = document.createElement('div');
+                cotasDiv.innerHTML = `
+                    <label for="input-cotas">Número de cotas: </label>
+                    <input type="number" id="input-cotas" min="1" placeholder="Ex: 5">
+                    <div class="button-container">
+                        <button onclick="calcularCotas(${total})">Calcular</button>
+                    </div>
+                    <div id="resultado-cotas" style="margin-top: 10px; font-size: 18px;"></div>
+                `;
+                document.getElementById('resultado').appendChild(cotasDiv);
+            }
+        }
+        
+        function calcularCotas(total) {
+            const numeroCotas = parseInt(document.getElementById('input-cotas').value) || 1;
+            const valorPorCota = (total / numeroCotas).toFixed(2);
+            document.getElementById('resultado-cotas').innerHTML = `
+                Valor por cota: <strong>R$ ${valorPorCota}</strong>
+            `;
+        }
+        </script>
+        
+
+</body>
+</html> 

@@ -1,0 +1,682 @@
+<!-- <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotofácil - Loteria</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9fc;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        h2 {
+            color: #A55592; /* Cor base da modalidade Lotofácil */
+            margin-top: 40px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        .title-container {
+            background-color: #A55592;
+            color: white;
+            padding: 5px 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 2em;
+        }
+        .form-container {
+            display: flex; /* Use flexbox to arrange items side-by-side */
+            justify-content: space-between; /* Space items evenly */
+            margin-top: 20px;
+            text-align: center;
+        }
+        .form-container div {
+            margin-bottom: 20px;
+            flex: 1; /* Make each input take equal space */
+        }
+        .form-container label {
+            font-size: 16px;
+            color: #333;
+            display: inline-flex;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        .form-container input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+       
+        .form-container input:focus {
+            outline: none;
+            border-color: #A55592; /* Cor de destaque ao focar */
+        } 
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .resultado-total {
+            color: #35669A;
+            font-size: 22px;
+        }
+		.resultado-total.jogos {
+            background-color: #e0f7fa;/*ADICIONADO*/
+        }
+        .resultado-total.dezenas {
+            background-color: #d1ffd6;/*ADICIONADO*/
+		}
+		.resultado-total strong {
+            color: #d32f2f;/*ADICIONADO*/
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .button-container button {
+            background-color: #A55592;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 20px 100px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        .button-container button:hover {
+            background-color: #924375;
+        }
+		 /* Responsividade */
+		 @media (min-width: 768px) {
+            .form-container {
+                display: flex;
+                justify-content: space-around;
+                gap: 20px;
+            }
+            input, button {
+                width: auto;
+            }
+            .result {
+                font-size: 22px;
+            }
+        }
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+                border: 0;
+            }
+            th, td {
+                padding: 8px;
+            }
+            th {
+                font-size: 16px;
+            }
+            .probabilidade {
+                font-size: 12px;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+        #valorAposta{
+            background-color: #efdce8; /*ADICIONADO*/
+        }
+        #quantidadeJogos {
+            background-color: #dfb9d1; /*ADICIONADO*/
+        }
+        #quantidadeDezenas {
+            background-color: #cf96ba; /*ADICIONADO*/
+        }
+
+        .resultado {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .tabela-probabilidades {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .tabela-probabilidades th, .tabela-probabilidades td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .tabela-probabilidades th {
+            background-color: c;
+            color: white;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #A55592;
+        }
+        #cota-container {
+        display: none; /* Oculto por padrão */
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #efe6f1; /* Cor de fundo suave para destacar o container */
+        border: 2px solid #A55592; /* Cor consistente com o tema */
+        border-radius: 8px;
+        text-align: center;
+        color: #333; /* Cor do texto */
+        }
+        #cota-container h3 {
+                font-size: 1.5em;
+                color: #A55592; /* Consistente com o título principal */
+                margin-bottom: 10px;
+        }
+
+        #cota-text {
+                font-size: 1.2em;
+                color: #555; /* Cor do texto secundário */
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover {
+            background-color: #924375;
+        }
+        .active{
+            background-color: #924375;
+        }
+        .pequeno{
+            text-align: center;
+            /*background-color: #4DA8DA;*/
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="title-container">
+        <h1>Lotofácil</h1>
+        <p>Calcule o valor total da sua aposta!</p>
+    </div>
+	
+    <nav>
+		<ul>
+            <li><a class="active" href="https://loteriascaixa.netlify.app/">Voltar</a></li>
+            <li><a href="https://loterias.caixa.gov.br/Paginas/default.aspx" target="_blank">Todas as Modalidades</a></li>
+            <li><a href="https://www.loteriasonline.caixa.gov.br/silce-web/#/termos-de-uso" target="_blank">Jogue Online</a></li>
+		</ul>
+	</nav>
+
+
+
+
+    <div class="form-container">
+        <div>
+            <label for="valorAposta">Valor da aposta simples (R$): </label>
+            <input type="number" id="valorAposta" min="3.00" step="0.10" placeholder="Ex: 3,00" required>
+        </div>
+        <div>
+            <label for="quantidadeJogos">Digite a quantidade de jogos: </label>
+            <input type="number" id="quantidadeJogos" min="1" placeholder="Ex: 1" required>
+        </div>
+        <div>
+            <label for="quantidadeDezenas">Quantas dezenas você quer jogar?: </label>
+            <input type="number" id="quantidadeDezenas" min="15" max="20" placeholder="Ex: 15" required>
+        </div>
+    </div>
+    
+
+    <div class="button-container">
+        <button onclick="calcular()">Calcular</button>
+    </div>
+
+	<div class="result">
+        <div id="resultado" class="resultado-total"></div>
+    </div>
+
+  
+    
+	
+    <h2>Probabilidades de Ganhar na Lotofácil</h2>
+    <p class="pequeno"><small>O <u>valor da Aposta (R$)</u> impactará significativamente a <u>probabilidade de Acertar 15,16,17,18,19 e 20 dezenas</u>.</small></p>
+
+    <table class="tabela-probabilidades">
+        <thead>
+            <tr>
+                <th>Dezenas Jogadas</th>
+                <th>Probabilidade de Acertar</th>
+                <th>Preço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>15</td>
+                <td>1 em 3.268.760</td>
+                <td>R$ 3,00</td>
+            </tr>
+            <tr>
+                <td>16</td>
+                <td>1 em 204.298</td>
+                <td>R$ 48,00</td>
+            </tr>
+            <tr>
+                <td>17</td>
+                <td>1 em 24.035</td>
+                <td>R$ 408,00</td>
+            </tr>
+            <tr>
+                <td>18</td>
+                <td>1 em 4.006</td>
+                <td>R$ 2.448,00</td>
+            </tr>
+            <tr>
+                <td>19</td>
+                <td>1 em 843</td>
+                <td>R$ 11.628,00</td>
+            </tr>
+            <tr>
+                <td>20</td>
+                <td>1 em 211</td>
+                <td>R$ 46.512,00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+       function calcular() {
+    const valorPorDezena = {
+        15: 3.00,
+        16: 48.00,
+        17: 408.00,
+        18: 2448.00,
+        19: 11628.00,
+        20: 46512.00,
+    };
+
+    const quantidadeJogos = parseInt(document.getElementById('quantidadeJogos').value);
+    const quantidadeDezenas = parseInt(document.getElementById('quantidadeDezenas').value);
+    
+    if (isNaN(quantidadeJogos) || quantidadeJogos < 1) {
+        alert("Por favor, insira uma quantidade válida de jogos.");
+        return;
+    }
+    
+    if (isNaN(quantidadeDezenas) || quantidadeDezenas < 15 || quantidadeDezenas > 20) {
+        alert("Por favor, insira uma quantidade válida de dezenas.");
+        return;
+    }
+
+    const valorAposta = valorPorDezena[quantidadeDezenas] || 3.00;
+    const total = valorAposta * quantidadeJogos;
+
+    // Exibe o resultado do cálculo
+    const resultadoDiv = document.getElementById("resultado");
+    resultadoDiv.innerHTML = `Você está fazendo ${quantidadeJogos} jogo(s) de ${quantidadeDezenas} dezenas.<br> 
+                              O valor total da aposta é <strong>R$ ${total.toFixed(2)}</strong>.`;
+
+    // Calcula e exibe a cota
+    const cota = (total / 10).toFixed(2); // Exemplo: divide por 10 como cálculo da cota
+    const cotaContainer = document.getElementById("cota-container");
+    const cotaText = document.getElementById("cota-text");
+
+    cotaText.innerHTML = `A cota sugerida por jogo é <strong>R$ ${cota}</strong>.`;
+    cotaContainer.style.display = "block"; // Exibe a cota
+}
+
+    </script>
+</body>
+</html>  -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotofácil - Loteria</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9fc;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        h2 {
+            color: #A55592; /* Cor base da modalidade Lotofácil */
+            margin-top: 40px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        .title-container {
+            background-color: #A55592;
+            color: white;
+            padding: 5px 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 2em;
+        }
+        .form-container {
+            display: flex; /* Use flexbox to arrange items side-by-side */
+            justify-content: space-between; /* Space items evenly */
+            margin-top: 20px;
+            text-align: center;
+        }
+        .form-container div {
+            margin-bottom: 20px;
+            flex: 1; /* Make each input take equal space */
+        }
+        .form-container label {
+            font-size: 16px;
+            color: #333;
+            display: inline-flex;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        .form-container input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+       
+        .form-container input:focus {
+            outline: none;
+            border-color: #A55592; /* Cor de destaque ao focar */
+        } 
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .resultado-total {
+            color: #35669A;
+            font-size: 22px;
+        }
+		.resultado-total.jogos {
+            background-color: #e0f7fa;/*ADICIONADO*/
+        }
+        .resultado-total.dezenas {
+            background-color: #d1ffd6;/*ADICIONADO*/
+		}
+		.resultado-total strong {
+            color: #d32f2f;/*ADICIONADO*/
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .button-container button {
+            background-color: #A55592;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 20px 100px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        .button-container button:hover {
+            background-color: #924375;
+        }
+		 /* Responsividade */
+		 @media (min-width: 768px) {
+            .form-container {
+                display: flex;
+                justify-content: space-around;
+                gap: 20px;
+            }
+            input, button {
+                width: auto;
+            }
+            .result {
+                font-size: 22px;
+            }
+        }
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+                border: 0;
+            }
+            th, td {
+                padding: 8px;
+            }
+            th {
+                font-size: 16px;
+            }
+            .probabilidade {
+                font-size: 12px;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+        #valorAposta{
+            background-color: #efdce8; /*ADICIONADO*/
+        }
+        #quantidadeJogos {
+            background-color: #dfb9d1; /*ADICIONADO*/
+        }
+        #quantidadeDezenas {
+            background-color: #cf96ba; /*ADICIONADO*/
+        }
+
+        .resultado {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .tabela-probabilidades {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .tabela-probabilidades th, .tabela-probabilidades td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .tabela-probabilidades th {
+            background-color: c;
+            color: white;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #A55592;
+        }
+        #cota-container {
+        display: none; /* Oculto por padrão */
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #efe6f1; /* Cor de fundo suave para destacar o container */
+        border: 2px solid #A55592; /* Cor consistente com o tema */
+        border-radius: 8px;
+        text-align: center;
+        color: #333; /* Cor do texto */
+        }
+        #cota-container h3 {
+                font-size: 1.5em;
+                color: #A55592; /* Consistente com o título principal */
+                margin-bottom: 10px;
+        }
+
+        #cota-text {
+                font-size: 1.2em;
+                color: #555; /* Cor do texto secundário */
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover {
+            background-color: #924375;
+        }
+        .active{
+            background-color: #924375;
+        }
+        .pequeno{
+            text-align: center;
+            /*background-color: #4DA8DA;*/
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="title-container">
+        <h1>Lotofácil</h1>
+        <p>Calcule o valor total da sua aposta!</p>
+    </div>
+	
+    <nav>
+		<ul>
+            <li><a class="active" href="https://loteriascaixa.netlify.app/">Voltar</a></li>
+            <li><a href="https://loterias.caixa.gov.br/Paginas/default.aspx" target="_blank">Todas as Modalidades</a></li>
+            <li><a href="https://www.loteriasonline.caixa.gov.br/silce-web/#/termos-de-uso" target="_blank">Jogue Online</a></li>
+		</ul>
+	</nav>
+
+    <div class="form-container">
+        <div>
+            <label for="valorAposta">Valor da aposta simples (R$): </label>
+            <input type="number" id="valorAposta" min="3.00" step="0.10" placeholder="Ex: 3,00" required>
+        </div>
+        <div>
+            <label for="quantidadeJogos">Digite a quantidade de jogos: </label>
+            <input type="number" id="quantidadeJogos" min="1" placeholder="Ex: 1" required>
+        </div>
+        <div>
+            <label for="quantidadeDezenas">Quantas dezenas você quer jogar?: </label>
+            <input type="number" id="quantidadeDezenas" min="15" max="20" placeholder="Ex: 15" required>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="calcular()">Calcular</button>
+    </div>
+
+    <!-- Exibição da cota calculada -->
+    <div id="cota-container">
+        <h3 id="cota-text"></h3>
+    </div>
+    
+    <h2>Probabilidades de Ganhar na Lotofácil</h2>
+    <p class="pequeno"><small>O <u>valor da Aposta (R$)</u> impactará significativamente a <u>probabilidade de Acertar 15,16,17,18,19 e 20 dezenas</u>.</small></p>
+
+    <table class="tabela-probabilidades">
+        <thead>
+            <tr>
+                <th>Dezenas Jogadas</th>
+                <th>Probabilidade de Acerto</th>
+                <th>Valor da Aposta (R$)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>15 Dezenas</td>
+                <td>1 em 3.268.760</td>
+                <td>R$ 2,00</td>
+            </tr>
+            <tr>
+                <td>16 Dezenas</td>
+                <td>1 em 204.298</td>
+                <td>R$ 32,00</td>
+            </tr>
+            <tr>
+                <td>17 Dezenas</td>
+                <td>1 em 24.035</td>
+                <td>R$ 272,00</td>
+            </tr>
+            <tr>
+                <td>18 Dezenas</td>
+                <td>1 em 4.005</td>
+                <td>R$ 1.872,00</td>
+            </tr>
+            <tr>
+                <td>19 Dezenas</td>
+                <td>1 em 844</td>
+                <td>R$ 8.568,00</td>
+            </tr>
+            <tr>
+                <td>20 Dezenas</td>
+                <td>1 em 200</td>
+                <td>R$ 20.160,00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="cota-container">
+        <h3 id="cota-text"></h3>
+    </div>
+
+    <script>
+        // Exibe o botão para calcular após o valor da cota ser preenchido
+        document.getElementById('valorAposta').addEventListener('input', function() {
+            var valorAposta = parseFloat(this.value);
+            if (valorAposta > 0) {
+                document.getElementById('calcular-container').style.display = 'block';
+            } else {
+                document.getElementById('calcular-container').style.display = 'none';
+            }
+        });
+
+        // Função para calcular o valor total
+        function calcular() {
+            var valorAposta = parseFloat(document.getElementById('valorAposta').value);
+            var quantidadeJogos = parseInt(prompt("Quantos jogos deseja realizar?"));
+            
+            // Verifica se a quantidade de jogos foi inserida
+            if (!quantidadeJogos || quantidadeJogos <= 0) {
+                alert("Por favor, insira uma quantidade de jogos válida.");
+                return;
+            }
+
+            var valorTotal = valorAposta * quantidadeJogos;
+            var cota = valorAposta; // Aqui é a cota, ajustada conforme o valor de entrada.
+
+            // Exibe a cota e o valor total da aposta
+            document.getElementById('cota-text').textContent = 'Cota da aposta: R$ ' + cota.toFixed(2);
+            document.getElementById('resultado').textContent = 'Valor total da aposta: R$ ' + valorTotal.toFixed(2);
+
+            document.getElementById('cota-container').style.display = 'block'; // Exibe a cota calculada
+        }
+    </script>
+</body>
+</html>

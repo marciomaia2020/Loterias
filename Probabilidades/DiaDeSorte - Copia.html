@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dia de Sorte - Loteria</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9fc;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        h2 {
+            color: #35669A;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #C78730;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #dcaf6f;
+        }
+        .title-container {
+            background-color: #C78730;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 2em;
+        }
+        .form-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            width: 100%;
+            max-width: 300px;
+        }  
+        #valor-aposta{
+            background-color: #ebd1ad; /*ADICIONADO*/
+        }
+        #quantidade-jogos {
+            background-color: #f5e8d6; /*ADICIONADO*/
+        }
+        #quantidade-dezenas {
+            background-color: #f0ddc1; /*ADICIONADO*/
+        }
+      
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .resultado-total {
+            color: #35669A;
+            font-size: 22px;
+        }
+        .resultado-total strong {
+            color: #d32f2f;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .button-container button {
+            background-color: #7b541e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 20px 100px;
+            border-radius: 8px;
+        }
+        .button-container button:hover {
+            background-color: #d7a35b;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #7b541e;
+        }
+        li {
+            float: left;
+        }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover {
+            background-color: #d7a35b;
+        }
+        .active{
+            background-color: #d7a35b;
+        }
+        .pequeno{
+            text-align: center;
+            /*background-color: #4DA8DA;*/
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title-container">
+        <h1>Dia de Sorte</h1>
+        <p>Calcule o valor total da sua aposta com cotas!</p>
+    </div>
+
+    <nav>
+		<ul>
+            <li><a class="active" href="https://loteriascaixa.netlify.app/">Voltar</a></li>
+            <li><a href="https://loterias.caixa.gov.br/Paginas/default.aspx" target="_blank">Todas as Modalidades</a></li>
+            <li><a href="https://www.loteriasonline.caixa.gov.br/silce-web/#/termos-de-uso" target="_blank">Jogue Online</a></li>
+		</ul>
+	</nav>
+
+
+    <div class="form-container">
+        <div>
+            <label for="valor-aposta">Valor da aposta simples (R$): </label>
+            <input type="number" id="valor-aposta" min="2.50" step="0.10" placeholder="Ex: 2,50" required><br>
+        </div>
+        <div>
+            <label for="quantidade-jogos">Quantidade de jogos: </label>
+            <input type="number" id="quantidade-jogos" min="1" placeholder="Ex: 1"><br>
+        </div>
+        <div>
+            <label for="quantidade-dezenas">Quantidade de dezenas por jogo: </label>
+            <input type="number" id="quantidade-dezenas" min="7" max="15" placeholder="Ex: 15" required><br>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="calcular()">Calcular</button>
+    </div>
+
+    <div class="result">
+        <div id="resultado" class="resultado-total"></div>
+        <div id="resultado-cotas"></div>
+    </div>
+
+    <h2>Probabilidades por Modalidade</h2>
+    <p class="pequeno"><small>O <u>Valor da Aposta (R$)</u> impactará significativamente a <u>Probabilidade de Acerto</u> 7,6,5 e 4 + 12 para o mês da sorte..</small></p>
+ 
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Quantidade de Números</th>
+                <th>Probabilidade de Acerto (7 Números)</th>
+                <th>Probabilidade de Acerto (6 Números)</th>
+                <th>Probabilidade de Acerto (5 Números)</th>
+                <th>Probabilidade de Acerto (4 Números)</th>
+                <th>Probabilidade de Acerto (Mês de Sorte)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>7 Números</td>
+                <td>1 em 2.629.575</td>
+                <td>1 em 15.652</td>
+                <td>1 em 453</td>
+                <td>1 em 37</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>8 Números</td>
+                <td>1 em 328.696</td>
+                <td>1 em 4.083</td>
+                <td>1 em 185</td>
+                <td>1 em 21</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>9 Números</td>
+                <td>1 em 73.043</td>
+                <td>1 em 1.422</td>
+                <td>1 em 90</td>
+                <td>1 em 13</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>10 Números</td>
+                <td>1 em 21.913</td>
+                <td>1 em 596</td>
+                <td>1 em 49</td>
+                <td>1 em 9</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>11 Números</td>
+                <td>1 em 7.968</td>
+                <td>1 em 284</td>
+                <td>1 em 29</td>
+                <td>1 em 6</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>12 Números</td>
+                <td>1 em 3.320</td>
+                <td>1 em 149</td>
+                <td>1 em 19</td>
+                <td>1 em 5</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>13 Números</td>
+                <td>1 em 1.532</td>
+                <td>1 em 85</td>
+                <td>1 em 13</td>
+                <td>1 em 4</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>14 Números</td>
+                <td>1 em 766</td>
+                <td>1 em 51</td>
+                <td>1 em 9</td>
+                <td>1 em 3</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>15 Números</td>
+                <td>1 em 408</td>
+                <td>1 em 32</td>
+                <td>1 em 7</td>
+                <td>1 em 3</td>
+                <td>12</td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+    <h2>Preços da Aposta</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Quantidade de Números</th>
+                <th>Valor da Aposta (R$)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>7</td><td>2,50</td></tr>
+            <tr><td>8</td><td>20,00</td></tr>
+            <tr><td>9</td><td>90,00</td></tr>
+            <tr><td>10</td><td>300,00</td></tr>
+            <tr><td>11</td><td>825,00</td></tr>
+            <tr><td>12</td><td>1980,00</td></tr>
+            <tr><td>13</td><td>4290,00</td></tr>
+            <tr><td>14</td><td>8580,00</td></tr>
+            <tr><td>15</td><td>16087,00</td></tr>
+        </tbody>
+    </table>
+
+    <script>
+        function calcular() {
+            const valorPorDezena = {
+                7: 2.50,
+                8: 20.00,
+                9: 90.00,
+                10: 300.00,
+                11: 825.00,
+                12: 1980.00,
+                13: 4290.00,
+                14: 8580.00,
+                15: 16087.00
+            };
+    
+            const quantidadeJogos = parseInt(document.getElementById("quantidade-jogos").value);
+            const quantidadeDezenas = parseInt(document.getElementById("quantidade-dezenas").value);
+    
+            if (isNaN(quantidadeJogos) || isNaN(quantidadeDezenas)) {
+                alert("Preencha todos os campos corretamente.");
+                return;
+            }
+    
+            if (quantidadeDezenas < 7 || quantidadeDezenas > 15) {
+                alert("Quantidade de dezenas deve estar entre 7 e 15.");
+                return;
+            }
+    
+            const valorJogo = valorPorDezena[quantidadeDezenas];
+            const valorTotal = valorJogo * quantidadeJogos;
+    
+            const resultadoDiv = document.getElementById("resultado");
+            resultadoDiv.innerHTML = `
+                O valor total para ${quantidadeJogos} jogo(s) com ${quantidadeDezenas} dezenas é: 
+                <strong>R$ ${valorTotal.toFixed(2)}</strong>
+            `;
+    
+            adicionarCampoCotas(valorTotal);
+        }
+    
+        function adicionarCampoCotas(valorTotal) {
+            const cotasDiv = document.getElementById("resultado-cotas");
+            cotasDiv.innerHTML = `
+                <label for="input-cotas">Número de cotas: </label>
+                <input type="number" id="input-cotas" min="1" placeholder="Ex: 5">
+            <div class="button-container">
+                <button onclick="calcularCotas(${valorTotal})">Calcular Cotas</button>
+             </div>    
+                <div id="cotas-resultado"></div>
+            `;
+        }
+    
+        function calcularCotas(valorTotal) {
+            const numeroCotas = parseInt(document.getElementById("input-cotas").value);
+            if (isNaN(numeroCotas) || numeroCotas < 1) {
+                alert("Por favor, insira um número válido de cotas.");
+                return;
+            }
+            const valorCota = valorTotal / numeroCotas;
+            const cotasResultadoDiv = document.getElementById("cotas-resultado");
+            cotasResultadoDiv.innerHTML = `
+                O valor de cada cota será de: <strong>R$ ${valorCota.toFixed(2)}</strong>
+            `;
+        }
+    </script>
+</body>
+</html> 

@@ -1,313 +1,434 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega-Sena - Loteria</title>
-    <style>
- body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f9fc;
-            color: #333;
-            padding: 20px;
-            margin: 0;
-        }
-        h2 {
-            color: #35669A;
-            margin-top: 40px;
-            text-align: center;
-            font-size: 1.5em;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-			box-sizing: border-box; /*ADICIONADO*/
-        }
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #0A3D62;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #a4c7e1;
-        }
-        .probabilidade, .premio {
-            font-weight: normal;
-            color: black;
-        }
-        .title-container {
-            background-color: #0A3D62;
-            color: white;
-            padding: 5px 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            font-size: 2em;
-        }
-       .form-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-        input, button {
-            padding: 10px;
-            margin: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #eee;
-            width: 100%;
-            max-width: 300px;
-        }
-        #valor-aposta-simples{
-            background-color: #d1e9fa; /*ADICIONADO*/
-        }
-		#quantidade-jogos {
-            background-color: #a3d3f5; /*ADICIONADO*/
-        }
-        #quantidade-dezenas {
-            background-color: #75bdf0; /*ADICIONADO*/
-        }
-        #input-cotas{
-            background-color: #d1e9fa; /*ADICIONADO*/
-        }
-		
-        .result {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .resultado-total {
-            color: #35669A;
-            font-size: 22px;
-        }
-		.resultado-total.jogos {
-            background-color: #e0f7fa;/*ADICIONADO*/
-        }
-        .resultado-total.dezenas {
-            background-color: #d1ffd6;/*ADICIONADO*/
-		}
-		.resultado-total strong {
-            color: #d32f2f;/*ADICIONADO*/
-        }
-		
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        .button-container button {
-            background-color: #0A3D62;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 20px 100px;
-            border-radius: 8px;
-        }
-        .button-container button:hover {
-            background-color: #4DA8DA;
-        }
-        /* Responsividade */
-        @media (min-width: 768px) {
-            .form-container {
-                display: flex;
-                justify-content: space-around;
-                gap: 20px;
-            }
-            input, button {
-                width: auto;
-            }
-            .result {
-                font-size: 22px;
+    <title>Mega-Sena - Calculadora de Apostas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mega-green': '#1B9A67',
+                        'mega-green-light': '#22c55e',
+                        'mega-green-dark': '#166f47',
+                        'mega-blue': '#0A3D62',
+                        'mega-blue-light': '#4DA8DA'
+                    }
+                }
             }
         }
-        @media (max-width: 768px) {
-            table {
-                font-size: 14px;
-                border: 0;
-            }
-            th, td {
-                padding: 8px;
-            }
-            th {
-                font-size: 16px;
-            }
-            .probabilidade {
-                font-size: 12px;
-            }
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-        }
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #0A3D62;
-        }
-        li {
-            float: left;
-        }
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        li a:hover {
-            background-color: #4DA8DA;
-        }
-        .active{
-            background-color: #4DA8DA;
-        }
-        .pequeno{
-            text-align: center;
-            /*background-color: #4DA8DA;*/
-        }
-    </style>
+    </script>
 </head>
-<body>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Dark mode detection -->
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
 
-    <div class="title-container">
-        <h1>Mega-Sena</h1>
-        <p>Calcule o valor total da sua aposta!</p>
+    <div class="max-w-7xl mx-auto p-4">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-mega-green to-mega-green-light text-white rounded-lg p-6 mb-6 shadow-lg">
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-2">Mega-Sena</h1>
+            <p class="text-center text-lg opacity-90">Calculadora Oficial de Apostas</p>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="bg-mega-blue dark:bg-gray-800 rounded-lg mb-6 overflow-hidden">
+            <div class="flex flex-wrap">
+                <a href="#" class="px-4 py-3 text-white hover:bg-mega-blue-light transition-colors flex-1 text-center text-base">
+                    Calculadora
+                </a>
+                <a href="https://loterias.caixa.gov.br/Paginas/default.aspx" target="_blank" 
+                   class="px-4 py-3 text-white hover:bg-mega-blue-light transition-colors flex-1 text-center text-base border-l border-mega-blue-light">
+                    Site Oficial
+                </a>
+                <a href="https://www.loteriasonline.caixa.gov.br/silce-web/#/termos-de-uso" target="_blank"
+                   class="px-4 py-3 text-white hover:bg-mega-blue-light transition-colors flex-1 text-center text-base border-l border-mega-blue-light">
+                    Apostar Online
+                </a>
+            </div>
+        </nav>
+
+        <!-- Calculator Form -->
+        <div class="grid lg:grid-cols-3 gap-6 mb-8">
+            <!-- Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-bold text-mega-blue dark:text-white mb-6">Calcular Aposta</h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label for="quantidade-jogos" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Quantidade de Jogos
+                            </label>
+                            <input type="number" id="quantidade-jogos" min="1" value="1" 
+                                   class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-mega-green focus:border-transparent dark:bg-gray-700 dark:text-white">
+                        </div>
+                        
+                        <div>
+                            <label for="quantidade-dezenas" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Dezenas por Jogo (6-20)
+                            </label>
+                            <input type="number" id="quantidade-dezenas" min="6" max="20" value="6" 
+                                   class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-mega-green focus:border-transparent dark:bg-gray-700 dark:text-white">
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="numero-cotas" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Número de Cotas (opcional)
+                        </label>
+                        <input type="number" id="numero-cotas" min="1" placeholder="Ex: 5" 
+                               class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-mega-green focus:border-transparent dark:bg-gray-700 dark:text-white">
+                    </div>
+
+                    <button onclick="calcularAposta()" 
+                            class="w-full bg-mega-green hover:bg-mega-green-dark text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg">
+                        Calcular Aposta
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="lg:col-span-1">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-mega-blue dark:text-white mb-4">Resultado</h3>
+                    <div id="resultado-calculo" class="space-y-3 text-gray-600 dark:text-gray-300">
+                        <p>Preencha os campos e clique em "Calcular Aposta" para ver o resultado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Validation Alert -->
+        <div id="alerta-validacao" class="hidden mb-6">
+            <div class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span id="texto-validacao" class="font-medium"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Official Prices Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-mega-blue dark:text-white mb-4">Preços e Probabilidades Oficiais</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Tabela oficial da Caixa Econômica Federal - valores atualizados
+            </p>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse bg-white dark:bg-gray-800">
+                    <thead>
+                        <tr class="bg-mega-blue text-white">
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Dezenas</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Valor (R$)</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Probabilidade Sena</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Probabilidade Quina</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Probabilidade Quadra</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-precos" class="text-sm">
+                        <!-- Tabela será preenchida via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Prize Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-mega-blue dark:text-white mb-4">Premiação Oficial</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Valores baseados no último concurso disponível
+            </p>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-mega-green text-white">
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Acertos</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Ganhadores</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Valor do Prêmio</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">6 (Sena)</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">1</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-bold text-mega-green dark:text-mega-green-light">R$ 99.592.255,98</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">5 (Quina)</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">117</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-bold text-mega-green dark:text-mega-green-light">R$ 36.347,56</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">4 (Quadra)</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">7.644</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-bold text-mega-green dark:text-mega-green-light">R$ 917,04</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <nav>
-		<ul>
-            <li><a class="active" href="https://loteriascaixa.netlify.app/">Voltar</a></li>
-            <li><a href="https://loterias.caixa.gov.br/Paginas/default.aspx" target="_blank">Todas as Modalidades</a></li>
-            <li><a href="https://www.loteriasonline.caixa.gov.br/silce-web/#/termos-de-uso" target="_blank">Jogue Online</a></li>
-		</ul>
-	</nav>
-
-
-<div class="form-container">
-   <div>
-        <label for="valor-aposta-simples">Valor da aposta simples (R$): </label>
-        <input type="number" id="valor-aposta-simples" step="0.01" placeholder="Ex: 5.00"><br>
-    </div>
-    <div>
-        <label for="quantidade-jogos">Quantidade de jogos: </label>
-        <input type="number" id="quantidade-jogos" min="1" placeholder="Ex: 1"><br>
-    </div>
-    <div>
-        <label for="quantidade-dezenas">Quantidade de dezenas por jogo (6 a 20): </label>
-        <input type="number" id="quantidade-dezenas" min="6" max="20" placeholder="Ex: 6" required><br>
-    </div>
-</div>
-
-    <div class="button-container">
-        <button onclick="calcular()">Calcular</button>
-    </div>
-
-
-    <div class="result">
-        <div id="resultado" class="resultado-total"></div>
-    </div>
-
-
-    <h2>Preços e Probabilidades</h2>
-    <p class="pequeno"><small>O <u>valor da Aposta (R$)</u> impactará significativamente a <u>probabilidade de Acertar as 6 dezenas</u>.</small></p>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Quantidade de Números</th>
-                <th>Valor da Aposta (R$)</th>
-                <th>Probabilidade de Acertar as 6 dezenas</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>6</td><td>5,00</td><td>1 em 50.063.860</td></tr>
-            <tr><td>7</td><td>35,00</td><td>1 em 7.151.980</td></tr>
-            <tr><td>8</td><td>140,00</td><td>1 em 1.787.995</td></tr>
-            <tr><td>9</td><td>420,00</td><td>1 em 595.998</td></tr>
-            <tr><td>10</td><td>1.050,00</td><td>1 em 238.399</td></tr>
-            <tr><td>11</td><td>2.310,00</td><td>1 em 108.363</td></tr>
-            <tr><td>12</td><td>4.620,00</td><td>1 em 54.182</td></tr>
-            <tr><td>13</td><td>8.580,00</td><td>1 em 29.175</td></tr>
-            <tr><td>14</td><td>15.015,00</td><td>1 em 16.671</td></tr>
-            <tr><td>15</td><td>25.025,00</td><td>1 em 10.003</td></tr>
-            <tr><td>16</td><td>40.040,00</td><td>1 em 6.252</td></tr>
-            <tr><td>17</td><td>61.880,00</td><td>1 em 4.045</td></tr>
-            <tr><td>18</td><td>92.820,00</td><td>1 em 2.697</td></tr>
-            <tr><td>19</td><td>135.660,00</td><td>1 em 1.845</td></tr>
-            <tr><td>20</td><td>193.800,00</td><td>1 em 1.292</td></tr>
-        </tbody>
-    </table>
 
     <script>
-        function calcular() {
-            const valorPorDezena = {
-                6: 5.00,
-                7: 35.00,
-                8: 140.00,
-                9: 420.00,
-                10: 1050.00,
-                11: 2310.00,
-                12: 4620.00,
-                13: 8580.00,
-                14: 15015.00,
-                15: 25025.00,
-                16: 40040.00,
-                17: 61880.00,
-                18: 92820.00,
-                19: 135660.00,
-                20: 193800.00
-            };
-        
-            const valorApostaSimples = parseFloat(document.getElementById('valor-aposta-simples').value) || 0;
-            const quantidadeJogos = parseInt(document.getElementById('quantidade-jogos').value);
-            const quantidadeDezenas = parseInt(document.getElementById('quantidade-dezenas').value);
-            const valorJogo = valorPorDezena[quantidadeDezenas] || valorApostaSimples;
-            const total = (valorJogo * quantidadeJogos).toFixed(2);
-        
-            const resultadoJogos = `Quantidade de jogos: <span class="resultado-total jogos">${quantidadeJogos}</span>`;
-            const resultadoDezenas = `Quantidade de dezenas por jogo: <span class="resultado-total dezenas">${quantidadeDezenas}</span>`;
-            const resultadoTotal = `O valor total para ${quantidadeJogos} jogo(s) de ${quantidadeDezenas} dezenas é: <strong>R$ ${total}</strong>`;
-        
-            document.getElementById('resultado').innerHTML = `${resultadoJogos}<br>${resultadoDezenas}<br>${resultadoTotal}`;
-        
-            // Inserir campo para cotas após o cálculo
-            if (!document.getElementById('input-cotas')) {
-                const cotasDiv = document.createElement('div');
-                cotasDiv.innerHTML = `
-                    <label for="input-cotas">Número de cotas: </label>
-                    <input type="number" id="input-cotas" min="1" placeholder="Ex: 5">
-                    <div class="button-container">
-                        <button onclick="calcularCotas(${total})">Calcular</button>
-                    </div>
-                    <div id="resultado-cotas" style="margin-top: 10px; font-size: 18px;"></div>
+        // Tabela oficial de preços da Caixa Econômica Federal - ATUALIZADA 2025
+        const tabelaOficial = {
+            6: { valor: 6.00, sena: 50063860, quina: 154518, quadra: 2332 },
+            7: { valor: 42.00, sena: 7151980, quina: 44981, quadra: 1038 },
+            8: { valor: 168.00, sena: 1787995, quina: 17192, quadra: 539 },
+            9: { valor: 504.00, sena: 595998, quina: 7791, quadra: 312 },
+            10: { valor: 1260.00, sena: 238399, quina: 3973, quadra: 195 },
+            11: { valor: 2772.00, sena: 108363, quina: 2211, quadra: 129 },
+            12: { valor: 5544.00, sena: 54182, quina: 1317, quadra: 90 },
+            13: { valor: 10296.00, sena: 29175, quina: 828, quadra: 65 },
+            14: { valor: 18018.00, sena: 16671, quina: 544, quadra: 48 },
+            15: { valor: 30030.00, sena: 10003, quina: 370, quadra: 37 },
+            16: { valor: 48048.00, sena: 6252, quina: 260, quadra: 29 },
+            17: { valor: 74256.00, sena: 4045, quina: 188, quadra: 23 },
+            18: { valor: 111384.00, sena: 2697, quina: 139, quadra: 19 },
+            19: { valor: 162792.00, sena: 1845, quina: 105, quadra: 16 },
+            20: { valor: 232560.00, sena: 1292, quina: 81, quadra: 13 }
+        };
+
+        // Tabela oficial de bolões da Caixa Econômica Federal - CORRIGIDA com valores atualizados
+        const tabelaBolao = {
+            6: { qtdApostas: 1, qtdCotasBolao: 2, qtdCotasParaBolao: 8, valorMinimoCota: 7.00, valorMinimoValorBolao: 18.00, valorMaximoValorBolao: 60.00, qtdMinJogosBolao: 10 },
+            7: { qtdApostas: 7, qtdCotasBolao: 2, qtdCotasParaBolao: 50, valorMinimoCota: 8.00, valorMinimoValorBolao: 42.00, valorMaximoValorBolao: 420.00, qtdMinJogosBolao: 10 },
+            8: { qtdApostas: 28, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 8.00, valorMinimoValorBolao: 168.00, valorMaximoValorBolao: 1680.00, qtdMinJogosBolao: 10 },
+            9: { qtdApostas: 84, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 8.00, valorMinimoValorBolao: 504.00, valorMaximoValorBolao: 5040.00, qtdMinJogosBolao: 10 },
+            10: { qtdApostas: 210, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 12.60, valorMinimoValorBolao: 1260.00, valorMaximoValorBolao: 12600.00, qtdMinJogosBolao: 10 },
+            11: { qtdApostas: 462, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 27.72, valorMinimoValorBolao: 2772.00, valorMaximoValorBolao: 27720.00, qtdMinJogosBolao: 10 },
+            12: { qtdApostas: 924, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 55.44, valorMinimoValorBolao: 5544.00, valorMaximoValorBolao: 55440.00, qtdMinJogosBolao: 10 },
+            13: { qtdApostas: 1716, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 102.96, valorMinimoValorBolao: 10296.00, valorMaximoValorBolao: 102960.00, qtdMinJogosBolao: 10 },
+            14: { qtdApostas: 3003, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 180.18, valorMinimoValorBolao: 18018.00, valorMaximoValorBolao: 180180.00, qtdMinJogosBolao: 10 },
+            15: { qtdApostas: 5005, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 300.30, valorMinimoValorBolao: 30030.00, valorMaximoValorBolao: 210210.00, qtdMinJogosBolao: 7 },
+            16: { qtdApostas: 8008, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 480.48, valorMinimoValorBolao: 48048.00, valorMaximoValorBolao: 162192.00, qtdMinJogosBolao: 4 },
+            17: { qtdApostas: 12376, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 742.56, valorMinimoValorBolao: 74256.00, valorMaximoValorBolao: 232768.00, qtdMinJogosBolao: 3 },
+            18: { qtdApostas: 18564, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 1113.84, valorMinimoValorBolao: 111384.00, valorMaximoValorBolao: 232768.00, qtdMinJogosBolao: 2 },
+            19: { qtdApostas: 27132, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 1627.92, valorMinimoValorBolao: 162792.00, valorMaximoValorBolao: 162792.00, qtdMinJogosBolao: 1 },
+            20: { qtdApostas: 38760, qtdCotasBolao: 2, qtdCotasParaBolao: 100, valorMinimoCota: 2325.60, valorMinimoValorBolao: 232560.00, valorMaximoValorBolao: 232560.00, qtdMinJogosBolao: 1 }
+        };
+
+        function preencherTabelaPrecos() {
+            const tbody = document.getElementById('tabela-precos');
+            tbody.innerHTML = '';
+            
+            for (const [dezenas, dados] of Object.entries(tabelaOficial)) {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 dark:hover:bg-gray-700';
+                row.innerHTML = `
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-medium dark:text-gray-300">${dezenas}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-bold text-mega-green dark:text-mega-green-light">R$ ${dados.valor.toFixed(2).replace('.', ',')}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">1 em ${dados.sena.toLocaleString('pt-BR')}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">1 em ${dados.quina.toLocaleString('pt-BR')}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 dark:text-gray-300">1 em ${dados.quadra.toLocaleString('pt-BR')}</td>
                 `;
-                document.getElementById('resultado').appendChild(cotasDiv);
+                tbody.appendChild(row);
             }
         }
-        
-        function calcularCotas(total) {
-            const numeroCotas = parseInt(document.getElementById('input-cotas').value) || 1;
-            const valorPorCota = (total / numeroCotas).toFixed(2);
-            document.getElementById('resultado-cotas').innerHTML = `
-                Valor por cota: <strong>R$ ${valorPorCota}</strong>
-            `;
-        }
-        </script>
-        
 
+        function mostrarAlerta(mensagem, tipo = 'error') {
+            const alerta = document.getElementById('alerta-validacao');
+            const texto = document.getElementById('texto-validacao');
+            
+            texto.textContent = mensagem;
+            alerta.className = tipo === 'error' 
+                ? 'mb-6 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg'
+                : 'mb-6 bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 dark:border-yellow-600 text-yellow-700 dark:text-yellow-300 px-4 py-3 rounded-lg';
+            
+            alerta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function esconderAlerta() {
+            const alerta = document.getElementById('alerta-validacao');
+            alerta.className = 'hidden mb-6';
+        }
+
+        function validarConfiguracao(dezenas, jogos, cotas) {
+            if (dezenas < 6 || dezenas > 20) {
+                mostrarAlerta('❌ Quantidade de dezenas deve ser entre 6 e 20.');
+                return false;
+            }
+            
+            if (!tabelaOficial[dezenas]) {
+                mostrarAlerta(`❌ Configuração inválida: ${dezenas} dezenas não está na tabela oficial da Caixa Econômica Federal.`);
+                return false;
+            }
+            
+            // Validações específicas para bolão quando há mais de 1 cota
+            if (cotas > 1) {
+                const dadosBolao = tabelaBolao[dezenas];
+                
+                // Validar número mínimo e máximo de cotas
+                if (cotas < dadosBolao.qtdCotasBolao) {
+                    mostrarAlerta(`❌ Para ${dezenas} dezenas, o número mínimo de cotas é ${dadosBolao.qtdCotasBolao}.`);
+                    return false;
+                }
+                
+                if (cotas > dadosBolao.qtdCotasParaBolao) {
+                    mostrarAlerta(`❌ Para ${dezenas} dezenas, o número máximo de cotas é ${dadosBolao.qtdCotasParaBolao}.`);
+                    return false;
+                }
+                
+                // Validar número mínimo de jogos para bolão
+                if (jogos < dadosBolao.qtdMinJogosBolao) {
+                    mostrarAlerta(`❌ Para bolão com ${dezenas} dezenas, é necessário no mínimo ${dadosBolao.qtdMinJogosBolao} jogo(s).`);
+                    return false;
+                }
+                
+                // Validar valor mínimo por cota
+                const valorTotal = tabelaOficial[dezenas].valor * jogos;
+                const valorPorCota = valorTotal / cotas;
+                
+                if (valorPorCota < dadosBolao.valorMinimoCota) {
+                    mostrarAlerta(`❌ Para bolão com ${dezenas} dezenas, o valor mínimo por cota é R$ ${dadosBolao.valorMinimoCota.toFixed(2).replace('.', ',')}.`);
+                    return false;
+                }
+                
+                // Validar valor mínimo e máximo do bolão
+                if (valorTotal < dadosBolao.valorMinimoValorBolao) {
+                    mostrarAlerta(`❌ Para bolão com ${dezenas} dezenas, o valor mínimo do bolão é R$ ${dadosBolao.valorMinimoValorBolao.toFixed(2).replace('.', ',')}.`);
+                    return false;
+                }
+                
+                if (valorTotal > dadosBolao.valorMaximoValorBolao) {
+                    mostrarAlerta(`❌ Para bolão com ${dezenas} dezenas, o valor máximo do bolão é R$ ${dadosBolao.valorMaximoValorBolao.toFixed(2).replace('.', ',')}.`);
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function calcularAposta() {
+            esconderAlerta();
+            
+            const quantidadeJogos = parseInt(document.getElementById('quantidade-jogos').value) || 1;
+            const quantidadeDezenas = parseInt(document.getElementById('quantidade-dezenas').value) || 6;
+            const numeroCotas = parseInt(document.getElementById('numero-cotas').value) || 1;
+            
+            // Validar configuração completa (incluindo bolão)
+            if (!validarConfiguracao(quantidadeDezenas, quantidadeJogos, numeroCotas)) {
+                document.getElementById('resultado-calculo').innerHTML = `
+                    <div class="text-red-600 dark:text-red-400">
+                        <p class="font-bold">Erro na configuração</p>
+                        <p>Verifique a mensagem de erro acima.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Validar quantidade de jogos
+            if (quantidadeJogos < 1) {
+                mostrarAlerta('❌ Quantidade de jogos deve ser pelo menos 1.');
+                return;
+            }
+            
+            // Obter dados da tabela oficial
+            const dadosOficiais = tabelaOficial[quantidadeDezenas];
+            const valorPorJogo = dadosOficiais.valor;
+            const valorTotal = valorPorJogo * quantidadeJogos;
+            const valorPorCota = valorTotal / numeroCotas;
+            
+            // Calcular probabilidades
+            const probSena = Math.round(dadosOficiais.sena / quantidadeJogos);
+            const probQuina = Math.round(dadosOficiais.quina / quantidadeJogos);
+            const probQuadra = Math.round(dadosOficiais.quadra / quantidadeJogos);
+            
+            // Exibir resultado
+            let resultadoHTML = `
+                <div class="space-y-4">
+                    <div class="bg-mega-green/10 dark:bg-mega-green/20 p-4 rounded-lg">
+                        <h4 class="font-bold text-mega-green dark:text-mega-green-light text-lg mb-2">💰 Resumo da Aposta</h4>
+                        <p class="text-gray-700 dark:text-gray-300"><strong>Jogos:</strong> ${quantidadeJogos}</p>
+                        <p class="text-gray-700 dark:text-gray-300"><strong>Dezenas por jogo:</strong> ${quantidadeDezenas}</p>
+                        <p class="text-gray-700 dark:text-gray-300"><strong>Valor por jogo:</strong> R$ ${valorPorJogo.toFixed(2).replace('.', ',')}</p>
+                        <p class="text-2xl font-bold text-mega-green dark:text-mega-green-light mt-2">
+                            Total: R$ ${valorTotal.toFixed(2).replace('.', ',')}
+                        </p>
+                    </div>
+            `;
+            
+            if (numeroCotas > 1) {
+                resultadoHTML += `
+                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-blue-700 dark:text-blue-300 mb-2">👥 Divisão em Cotas</h4>
+                        <p class="text-gray-700 dark:text-gray-300"><strong>Número de cotas:</strong> ${numeroCotas}</p>
+                        <p class="text-xl font-bold text-blue-700 dark:text-blue-300">
+                            Valor por cota: R$ ${valorPorCota.toFixed(2).replace('.', ',')}
+                        </p>
+                    </div>
+                `;
+            }
+            
+            resultadoHTML += `
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <!--
+						<h4 class="font-bold text-gray-700 dark:text-gray-300 mb-2">🎯 Suas Probabilidades</h4>
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Sena:</strong> 1 em ${probSena.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}</p>
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Quina:</strong> 1 em ${probQuina.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}</p>
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Quadra:</strong> 1 em ${probQuadra.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}</p>
+						-->
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Sena (base):</strong> 1 em ${dadosOficiais.sena.toLocaleString('pt-BR')}</p>
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Sena (suas chances):</strong> 1 em ${probSena.toLocaleString('pt-BR')}</p>
+						<hr />
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Quina (base):</strong> 1 em ${dadosOficiais.quina.toLocaleString('pt-BR')}</p>
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Quina (suas chances):</strong> 1 em ${probQuina.toLocaleString('pt-BR')}</p>
+						<hr />
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Quadra (base):</strong> 1 em ${dadosOficiais.quadra.toLocaleString('pt-BR')}</p>
+						<p class="text-sm text-gray-600 dark:text-gray-400"><strong>Quadra (suas chances):</strong> 1 em ${probQuadra.toLocaleString('pt-BR')}</p>
+                    </div>`;
+                    
+            // Mostrar informações sobre bolão se aplicável
+            if (numeroCotas > 1) {
+                const dadosBolao = tabelaBolao[quantidadeDezenas];
+                resultadoHTML += `
+                    <div class="bg-yellow-50 dark:bg-yellow-900/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-yellow-700 dark:text-yellow-300 mb-2">ℹ️ Informações do Bolão</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">✅ Configuração válida para bolão</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><strong>Cotas permitidas:</strong> ${dadosBolao.qtdCotasBolao} a ${dadosBolao.qtdCotasParaBolao}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><strong>Valor mín. por cota:</strong> R$ ${dadosBolao.valorMinimoCota.toFixed(2).replace('.', ',')}</p>
+                    </div>
+                `;
+            }
+            
+            resultadoHTML += `</div>`;
+            
+            document.getElementById('resultado-calculo').innerHTML = resultadoHTML;
+        }
+
+        // Validação em tempo real
+        document.getElementById('quantidade-dezenas').addEventListener('input', function() {
+            const valor = parseInt(this.value);
+            if (valor && (valor < 6 || valor > 20 || !tabelaOficial[valor])) {
+                this.style.borderColor = '#ef4444';
+                this.style.backgroundColor = '#fef2f2';
+            } else {
+                this.style.borderColor = '#d1d5db';
+                this.style.backgroundColor = 'white';
+            }
+        });
+
+        // Preencher tabela ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            preencherTabelaPrecos();
+        });
+    </script>
 </body>
-</html> 
+</html>
